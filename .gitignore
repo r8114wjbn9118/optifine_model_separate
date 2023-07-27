@@ -1,0 +1,5 @@
+__pycache__/
+model_separate_data/
+venv/
+config.ini
+*.zip

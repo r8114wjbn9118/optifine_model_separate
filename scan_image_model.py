@@ -10,13 +10,14 @@ def open_img(path):
 	img = numpy.array(Image.open(path))
 
 def get_img_path_list(entity_type_list):
-	img_type = str_list_to_list(get_config("image", "type"))
+	img_type = get_config("image", "type")
+	img_type = convert_config_str(img_type)
 
 	img_path_list = {}
 	for entity_type in entity_type_list:
 		img_path_list[entity_type] = []
 
-	dir = os.path.join(get_config("dir_path", "optifine"), "random")
+	dir = os.path.join(optifine_dir, "random")
 	for root, dirs, files in os.walk(dir):
 		is_entity_type_dir = ""
 
@@ -85,7 +86,7 @@ def check_img_model(entity_type_list, img_path_list):
 	
 def get_check_entity_type_list(entity_type_list):
 	check_entity_type_list = []
-	listdir = os.listdir(os.path.join(get_config("dir_path", "data"), "img_models"))
+	listdir = os.listdir(data_dir, "img_models")
 	for entity_type in entity_type_list:
 		if not f"{entity_type}.json" in listdir:
 			check_entity_type_list.append(entity_type)

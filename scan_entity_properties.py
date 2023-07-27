@@ -84,9 +84,10 @@ def get_character_data(properties_data_list):
 				models = properties_data.get("models", "")
 				if models:
 					for model in models.split(" "):
-						char_data["models"].append(model)
+						if model not in char_data["models"]:
+							char_data["models"].append(model)
 						if models_index <= int(model):
-							models_index = model + 1
+							models_index = int(model) + 1
 				elif not len(char_data["models"]):
 					char_data["models"].append(str(models_index))
 					models_index += 1

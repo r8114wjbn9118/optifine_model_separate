@@ -15,11 +15,13 @@ def generate_char_model(entity_type, img_model_data, character_data_list):
 			img_name_index[ini].append(index)
 
 	parent_bones_models = get_parent_bones_models(entity_type)
+
 	
 	for ci in range(len(character_data_list)):
 		character_data = character_data_list[ci]
 		if not character_data:
 			continue
+
 		character_name = character_data["name"][0]
 
 		model_index = {}
@@ -41,13 +43,23 @@ def get_parent_bones_models(entity_type):
 	path = get_data_dir_file_path("parent_bones", entity_type)
 	dir = os.path.dirname(path)
 	while not os.path.isfile(path):
-		print(f"{entity_type} - 缺少父骨骼, 請使用Blockbench生成該生物的jem檔放置到以下文件夾")
+		print(f"{entity_type} - 缺少原模型, 請使用Blockbench生成該生物的jem檔並更改名字為{path}放置到以下文件夾")
 		print(dir)
-		print("注意: 缺少父骨骼可能會讓optifine無法讀取模型")
+		print("注意: 缺少原模型可能會讓optifine無法讀取")
 		print("按enter重新讀取或按下右上角按鈕關閉")
 		input()
 	parent_bones_models = read_json(path)
-	return parent_bones_models.get("models", {})
+	return process_parent_bones_models(parent_bones_models.get("models", {}))
+
+def process_parent_bones_models(models):
+	for i in range(len(models)):
+		model = models[i]
+		keys = model.keys()
+		if "submodels" in keys:
+			model["submodels"] = process_parent_bones_models(model["submodels"])
+		if "boxes" in keys:
+			del model["boxes"]
+	return models
 
 def update_models(data, update):
 	for key in data:
@@ -92,8 +104,9 @@ def get_char_model(model_data_dict, model_index_dict, used_boxes_name_list):
 			if model_data["id"] == index_key:
 				data = {}
 				for data_key in model_data:
-					if data_key == "submodels" and len(model_index[data_key]):
-						data[data_key], used_boxes_name_list = (get_char_model(model_data[data_key], model_index[data_key], used_boxes_name_list))
+					if data_key == "submodels":
+						if len(model_index[data_key]):
+							data[data_key], used_boxes_name_list = get_char_model(model_data[data_key], model_index[data_key], used_boxes_name_list)
 					else:
 						if data_key == "animations":
 							continue

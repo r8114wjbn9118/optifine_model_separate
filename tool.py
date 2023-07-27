@@ -88,35 +88,37 @@ def get_data_dir_file_path(dir, filename, extension = ""):
 	if extension is None:
 		return path
 	if not extension:
-		extension = str_dict_to_dict(get_config("data_dir", "extension")).get(dir)
+		extension = get_data_dir_extension().get(dir)
 		if not extension:
 			return os.path.join(data_dir, dir)
 	return path + "." + extension
 
 def make_data_dir():
-	for dir in str_dict_to_dict(get_config("data_dir", "extension")):
+	for dir in get_data_dir_extension():
 		if not dir in os.listdir(data_dir):
 			os.mkdir(os.path.join(data_dir, dir))
 
 def get_optifine_dir():
 	return os.path.abspath(os.path.join(root_dir, "assets", "minecraft", "optifine"))
 
+def get_data_dir_extension():
+	return {
+		"img_models":"json",
+		"cem":"jem",
+		"connection":"json",
+		"char_models":"json",
+		"parent_bones":"jem",
+		"properties":"properties",
+		"tsv":"tsv"
+		}
 
 
+def convert_config_str(s:str):
+	return json.loads(s.replace("'",'"'))
 
-def str_list_to_list(s:str):
-	return s.strip('[]').replace("'",'').replace(' ','').split(',')
-
-def str_dict_to_dict(s:str):
-	d = {}
-	l = s.strip("\{\}").replace("'",'"').replace('"','').replace(' ','').split(",")
-	for i in l:
-		t = i.split(":")
-		d[t[0]] = t[1]
-	return d
 
 def check_path_extension(path, target):
-	extension  = os.path.splitext(path)[1]
+	extension = os.path.splitext(path)[1]
 	return extension[1:] in target
 
 
@@ -167,7 +169,6 @@ def get_target_entity_type(args:list = None):
 	return target_entity_type_list
 
 def get_entity_type_list():
-	optifine_dir = get_config("dir_path", "optifine")
 	dir = os.path.join(optifine_dir, "cem")
 
 	entity_type_list = []
@@ -208,18 +209,14 @@ if open_config():
 	root_dir = get_config("dir_path", "resourcepacks")
 else:
 	root_dir = get_root_dir()
+print(f"resource pack: {root_dir}")
 
 data_dir = get_data_dir()
 optifine_dir = get_optifine_dir()
 
 DEFALUT_CONFIG = {
 	"dir_path": {
-		"resourcepacks": root_dir,
-		"data": data_dir,
-		"optifine": optifine_dir
-	},
-	"data_dir": {
-		"extension": {"img_models":"json","cem":"jem","connection":"json","char_models":"json","parent_bones":"jem","properties":"properties","tsv":"tsv"}
+		"resourcepacks": root_dir
 	},
 	"image": {
 		"type": ["jpg","png"]
