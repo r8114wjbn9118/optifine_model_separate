@@ -83,14 +83,18 @@ def get_data_dir():
 		os.mkdir(data_dir_name)
 	return os.path.abspath(data_dir_name)
 
-def get_data_dir_file_path(dir, filename, extension = ""):
-	path = os.path.join(data_dir, dir, f"{filename}")
-	if extension is None:
-		return path
+def get_data_dir_file_path(dir, filename, extension = "", type = ""):
+	path = os.path.join(data_dir, dir)
+	if type:
+		path = os.path.join(path, type)
+		if not os.path.isdir(path):
+			os.mkdir(path)
+	path = os.path.join(path, f"{filename}")
+
 	if not extension:
 		extension = get_data_dir_extension().get(dir)
-		if not extension:
-			return os.path.join(data_dir, dir)
+	if extension is None:
+		return path
 	return path + "." + extension
 
 def make_data_dir():
@@ -109,7 +113,8 @@ def get_data_dir_extension():
 		"char_models":"json",
 		"parent_bones":"jem",
 		"properties":"properties",
-		"tsv":"tsv"
+		"tsv":"tsv",
+		"anim":None
 		}
 
 

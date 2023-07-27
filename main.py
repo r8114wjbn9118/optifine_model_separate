@@ -4,6 +4,7 @@ import scan_entity_properties
 import generate_char_model
 import generate_properties
 import tsv_to_properties
+import generate_anim
 
 
 def close_entity_type_list(target_entity_type_list):
@@ -39,6 +40,7 @@ def main():
 		print("4.生成角色模型")
 		print("5.生成properties檔及tsv檔")
 		print("6.轉換tsv檔為properties檔")
+		print("7.生成動畫")
 		print("輸入數字以選擇行動")
 
 		try:
@@ -58,7 +60,8 @@ action = [
 	scan_entity_properties.main,
 	generate_char_model.main,
 	generate_properties.main,
-	tsv_to_properties.main
+	tsv_to_properties.main,
+	generate_anim.main
 	]
 
 entity_type_list = None

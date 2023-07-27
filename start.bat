@@ -6,7 +6,7 @@ if not exist "venv" (
 	py -m venv venv
 )
 
-echo 進入執行環境
+echo 進入執行環境 
 call venv\Scripts\activate
 
 echo 下載程式需求的模組

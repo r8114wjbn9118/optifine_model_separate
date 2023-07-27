@@ -37,13 +37,13 @@ def generate_char_model(entity_type, img_model_data, character_data_list):
 		#write_json(get_data_dir_file_path("cem", entity_type+(ci+1)), model_data)
 		
 		char_model_data = get_char_model_data(parent_bones_models, model_data, model_index)
-		write_json(get_data_dir_file_path("cem", entity_type+character_data["models"][0]), char_model_data)
+		write_json(get_data_dir_file_path("cem", entity_type+character_data["models"][0], type = entity_type), char_model_data)
 		
 def get_parent_bones_models(entity_type):
 	path = get_data_dir_file_path("parent_bones", entity_type)
 	dir = os.path.dirname(path)
 	while not os.path.isfile(path):
-		print(f"{entity_type} - 缺少原模型, 請使用Blockbench生成該生物的jem檔並更改名字為{path}放置到以下文件夾")
+		print(f"{entity_type} - 缺少原模型, 請使用Blockbench生成該生物的jem檔並更改名字為 {path} 放置到以下文件夾")
 		print(dir)
 		print("注意: 缺少原模型可能會讓optifine無法讀取")
 		print("按enter重新讀取或按下右上角按鈕關閉")
