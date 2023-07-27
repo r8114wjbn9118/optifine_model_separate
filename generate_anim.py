@@ -101,12 +101,12 @@ def generate_properties(entity_type, img_path):
 		
 def main(target_entity_type_list):
 	for entity_type in target_entity_type_list:
+		print(f"{entity_type} - 開始生成動畫")
+
 		img_path_list = get_img_path(entity_type)
 		for img_path in img_path_list:
-			print(f"{entity_type} - 開始生成動畫圖片")
 			crop_image(entity_type, img_path)
 
-			print(f"{entity_type} - 開始生成動畫properties檔")
 			generate_properties(entity_type, img_path)
 
 if __name__ == "__main__":
