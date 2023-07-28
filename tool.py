@@ -50,9 +50,12 @@ def get_config(section:str, key:str):
 	except:
 		return None
 
-def userConfirm():
+def userConfirm(default = False):
 	try:
-		return input()[0].lower() == "y"
+		s = input()
+		if default and not s:
+			return True
+		return s[0].lower() == "y"
 	except:
 		return False
 
@@ -64,7 +67,7 @@ def get_root_dir():
 			if data_dir_split[i] == "resourcepacks":
 				path = os.sep.join(data_dir_split[0:i + 2])
 				break
-	while not "pack.mcmeta" in os.listdir(path):
+	while not path or not "pack.mcmeta" in os.listdir(path):
 		print("未找到resourcepack,請輸入位置")
 		path = input()
 
