@@ -86,7 +86,7 @@ def check_img_model(entity_type_list, img_path_list):
 	
 def get_check_entity_type_list(entity_type_list):
 	check_entity_type_list = []
-	listdir = os.listdir(data_dir, "img_models")
+	listdir = os.listdir(os.path.join(data_dir, "img_models"))
 	for entity_type in entity_type_list:
 		if not f"{entity_type}.json" in listdir:
 			check_entity_type_list.append(entity_type)
